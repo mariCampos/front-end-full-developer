@@ -1,6 +1,13 @@
+Vue.use(VueResource);
+
 new Vue({
 	el: '#postagens',
-	data:{
+	ready: function(){
+		this.$http.get('/postagens').then(function(response){
+			this.$set('postagens', response.data);
+		});
+	}
+	/*data:{
 		postagens: [
 		{
 			texto: 'Mais ou menos...'
@@ -10,5 +17,5 @@ new Vue({
 			texto: 'Bad day!'
 		}
 		]		
-	}
+	}*/
 });

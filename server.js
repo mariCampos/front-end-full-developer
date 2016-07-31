@@ -102,6 +102,21 @@ app.post('/postagem', (req, res) => {
 	});
 });
 
+app.get('/postagens',(req, res) => {
+	if(req.session.user){
+		mongoClient.connect(MONGODB_URI, (err, db) => {
+			const usuarios = db.collection('usuarios');
+			usuarios.find({'_id': new ObjectId(req.session.user.id)}).toArray((err,docs) => {
+				db.close();
+
+				res.json(docs[0].posts);
+			});
+		});
+	}else{
+		res.json([]);
+	}
+});
+
 app.get('/logout', (req, res) => {
 	delete req.session.user;
 	res.redirect('/');
